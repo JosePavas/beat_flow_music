@@ -58,3 +58,9 @@ class ListaReproduccion:
 
     def agregar_cancion(self, cancion):
         self.canciones.append(cancion)
+    
+    def eliminar_cancion(self, cancion):
+        self.canciones.remove(cancion)
+
+
+
