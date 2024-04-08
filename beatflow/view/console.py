@@ -1,49 +1,51 @@
-import beatflow
+from beatflow.model.beatflow import BeatFlow, Cancion, ListaReproduccion
+import sys
 
-class UIConsola:
-
+class App:
     def __init__(self):
-        self.beatflow: beatflow = beatflow()
-        self.opciones = {
-            "1": self.abrir_beatflow,
-            "2": self.salir
-        }
-def mostrar_menu(listas_reproduccion):
-    print("\n*** Menú de BeatFlow ***")
-    print("1. Crear lista de reproducción")
-    print("2. Ver listas de reproducción")
-    print("3. Seleccionar lista de reproducción")
-    print("4. Agregar canción a la lista de reproducción seleccionada")
-    print("5. Eliminar canción de la lista de reproducción seleccionada")
-    print("6. Salir")
+        self.beatflow = BeatFlow()
+        #self.cancion = Cancion()
+        #self.lista_reproduccion = ListaReproduccion()
 
-    opcion = input("Seleccione una opción: ")
-    return opcion
+    @staticmethod
+    def mostrar_menu():
+        print("\n** Menú de BeatFlow **")
+        print("1. Crear nueva lista de reproducción")
+        print("2. Ver listas de reproducción")
+        print("3. Ver canciones de una lista de reproducción")
+        print("4. Agregar canción a lista de reproducción")
+        print("5. Eliminar canción de lista de reproducción")
+        print("6. Salir")
 
-def funcionalidad_menu():
-    listas_reproduccion = []
+    def ejecutar(self):
+        while True:
+            App.mostrar_menu()
+            opcion = input("Seleccione una opción: ")
 
-    while True:
-        opcion = mostrar_menu(listas_reproduccion)
-
-        if opcion == "1":
-            beatflow.crear_lista_reproduccion(listas_reproduccion)
-        elif opcion == "2":
-            beatflow.ver_listas_reproduccion(listas_reproduccion)
-        elif opcion == "3":
-            lista_seleccionada = beatflow.seleccionar_lista(listas_reproduccion)
-            if lista_seleccionada:
-                lista_seleccionada.ver_lista()
-        elif opcion == "4":
-            lista_seleccionada = beatflow.seleccionar_lista(listas_reproduccion)
-            if lista_seleccionada:
-                beatflow.agregar_cancion(lista_seleccionada)
-        elif opcion == "5":
-            lista_seleccionada = beatflow.seleccionar_lista(listas_reproduccion)
-            if lista_seleccionada:
-                beatflow.eliminar_cancion(lista_seleccionada)
-        elif opcion == "6":
-            print("¡Hasta luego!")
-            break
-        else:
-            print("Opción no válida. Por favor, seleccione una opción válida.")
+            if opcion == "1":
+                nombre_lista = input("Ingrese el nombre de la nueva lista de reproducción: ")
+                self.beatflow.crear_lista_reproduccion(nombre_lista)
+            elif opcion == "2":
+                self.beatflow.ver_listas_reproduccion()
+            elif opcion == "3":
+                nombre_lista = input("Ingrese el nombre de la lista de reproducción: ")
+                self.beatflow.ver_canciones_lista(nombre_lista)
+            elif opcion == "4":
+                nombre_lista = input("Ingrese el nombre de la lista de reproducción: ")
+                nombre_cancion = input("Ingrese el nombre de la canción: ")
+                artista_cancion = input("Ingrese el nombre del artista: ")
+                cancion = Cancion(nombre_cancion, artista_cancion)
+                
+                # Llamada corregida
+                self.beatflow.agregar_cancion(nombre_lista, cancion)
+                
+            elif opcion == "5":
+                nombre_lista = input("Ingrese el nombre de la lista de reproducción: ")
+                indice_cancion = int(input("Ingrese el índice de la canción que desea eliminar: "))
+                self.beatflow.eliminar_cancion(nombre_lista, indice_cancion)
+                
+            elif opcion == "6":
+                print("\n¡Gracias por utilizar BeatFlow!")
+                sys.exit()
+            else:
+                print("Opción no válida. Por favor, seleccione una opción válida.")

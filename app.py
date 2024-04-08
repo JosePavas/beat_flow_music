@@ -1,5 +1,5 @@
-from beatflow.view.console import UIconsola
+from beatflow.view.console import App
 
 if __name__ == "__main__":
-    consola = UIconsola()
-    consola.ejecutar_app()
+    app = App()
+    app.ejecutar()
