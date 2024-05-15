@@ -1,6 +1,4 @@
 import random
-
-
 import sys
 
 class Cancion:
@@ -84,5 +82,49 @@ class BeatFlow:
             self.listas_reproduccion[nombre_lista].mostrar_lista()
         else:
             print("No existe una lista de reproducción con ese nombre.")
+    def reproducir_cola(self):
+        if self.cola_reproduccion:
+            self.cancion_actual = self.cola_reproduccion.pop(0)
+            print(f"Reproduciendo: {self.cancion_actual}")
+        else:
+            print("La cola de reproducción está vacía.")
 
+    def siguiente_cancion(self):
+        if self.cola_reproduccion:
+            self.cancion_actual = self.cola_reproduccion[0]
+            print(f"Siguiente canción: {self.cancion_actual}")
+        else:
+            print("La cola de reproducción está vacía.")
+
+    def anterior_cancion(self):
+        if len(self.cola_reproduccion) >= 2:
+            self.cola_reproduccion.insert(1, self.cancion_actual)
+            self.cancion_actual = self.cola_reproduccion.pop(0)
+            print(f"Reproduciendo anterior: {self.cancion_actual}")
+        else:
+            print("No hay canción anterior en la cola de reproducción.")
+
+    def buscar_cancion(self, nombre_cancion):
+        for lista in self.listas_reproduccion.values():
+            for cancion in lista.canciones:
+                if nombre_cancion.lower() in cancion.nombre.lower():
+                    print(f"Se encontró la canción '{cancion}' en la lista '{lista.nombre}'.")
+                    return
+        print(f"No se encontró la canción '{nombre_cancion}' en ninguna lista de reproducción.")
+
+    def subir_volumen(self, cantidad):
+        self.volumen = min(100, self.volumen + cantidad)
+        print(f"Volumen subido a {self.volumen}.")
+
+    def bajar_volumen(self, cantidad):
+        self.volumen = max(0, self.volumen - cantidad)
+        print(f"Volumen bajado a {self.volumen}.")
+
+    def reproducir_random(self):
+        todas_las_canciones = [cancion for lista in self.listas_reproduccion.values() for cancion in lista.canciones]
+        random.shuffle(todas_las_canciones)
+        self.cola_reproduccion = todas_las_canciones
+        print("Reproduciendo en orden aleatorio:")
+        for cancion in self.cola_reproduccion:
+            print(cancion)
 
